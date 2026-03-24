@@ -53,7 +53,7 @@
         <script>
             // Load saved happiness or default to 50
             let happiness = parseInt(localStorage.getItem("happiness")) || 50;
-            
+
             const responses = [
              "Rock appreciates the effort.",
              "That helped… slightly.",
@@ -93,7 +93,9 @@ function feedRock() {
 
     document.getElementById("lastQuote").innerText = "Last: " + quote;
     document.getElementById("quote").value = "";
-
+     
+    // Save happiness to localStorage
+    localStorage.setItem("happiness", happiness);
     updateUI();
 }
 
