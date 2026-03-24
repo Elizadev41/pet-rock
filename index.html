@@ -44,14 +44,16 @@
                <div id="fill" class="fill"></div>
             </div>
 
-            <input id="quote" placeholder="type your quote...">
+            <input id="quote" placeholder="type your quote..." onkeypress="if(event.key==='Enter') feedRock()">
             <button onclick="feedRock()">Feed Rock</button>
 
             <p id="response"></p>
             <p id="lastQuote"></p>
 
         <script>
-            let happiness = 50;
+            // Load saved happiness or default to 50
+            let happiness = parseInt(localStorage.getItem("happiness")) || 50;
+            
             const responses = [
              "Rock appreciates the effort.",
              "That helped… slightly.",
