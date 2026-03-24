@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pet Rock</title>
+        <style>
+            body {
+                background: #0f0f14;
+                color:white;
+                font-family: Arial;
+                text-align: center;
+                padding-top: 50px;  
+            }
+             
+            input {
+                padding: 10px;
+                font-size: 16px;
+                margin-top: 20px;
+            }
+            button {
+                padding: 10px 15px;
+                margin-left: 10px;
+                cursor: pointer;
+            }
+            .bar{
+                width: 200px;
+                height: 10px;
+                background: #333;
+                margin: 10px auto;
+            }
+
+            .fill {
+                height: 100%;
+                background: purple;
+                width: 50%;
+            }
+        </style>
+    </head>
+
+    <body>
+         <h1>My Pet Rock 🪨</h1>
+         <div id="rock" class="rock">😐</div>
+         <p id="happinessText">Happiness: 50</p>
+            <div class="bar">
+               <div id="fill" class="fill"></div>
+            </div>
+
+            <input id="quote" placeholder="type your quote...">
+            <button onclick="feedRock()">Feed Rock</button>
+
+            <p id="response"></p>
+            <p id="lastQuote"></p>
+
+        <script>
+            let happiness = 50;
+            const responses = [
+             "Rock appreciates the effort.",
+             "That helped… slightly.",
+             "Energy received.",
+             "Okay yeah, that was decent.",
+             "Rock is feeling something."
+            ];
+function updateUI() {
+    document.getElementById("happinessText").innerText = "Happiness: " + happiness;
+  
+  document.getElementById("fill").style.width = happiness + "%";
+
+  let mood = "😐";
+  if (happiness >= 80) {
+    mood = "😄";
+  } else if (happiness >= 60) {
+    mood = "🙂";
+  } else if (happiness >= 40) {
+    mood = "😐";
+  } else if (happiness >= 20) {
+    mood = "🙁";
+  } else {
+    mood = "😢";
+  }
+   document.getElementById("rock").innerText = mood;
+}
+
+function feedRock() {
+    let quote = document.getElementById("quote").value;
+    if (quote === "") return;
+
+    happiness += 15;
+    if (happiness > 100) happiness = 100;
+
+    let random = responses[Math.floor(Math.random() * responses.length)];
+    document.getElementById("response").innerText = random;
+
+    document.getElementById("lastQuote").innerText = "Last: " + quote;
+    document.getElementById("quote").value = "";
+
+    updateUI();
+}
+
+updateUI();
+        </script>
+
+        </body>
+</html>
