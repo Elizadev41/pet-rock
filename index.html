@@ -1,106 +1,448 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Pet Rock</title>
         <style>
+            :root {
+                --bg: #11131a;
+                --panel: #1a1f2b;
+                --text: #f4f7fb;
+                --muted: #b4bfd3;
+                --track: #2e3547;
+                --good: #5bd18b;
+                --mid: #7d8cff;
+                --bad: #ff7171;
+                --accent: #ffd978;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
             body {
-                background: #0f0f14;
-                color:white;
-                font-family: Arial;
+                margin: 0;
+                min-height: 100vh;
+                background:
+                    radial-gradient(circle at top, #1d2230 0%, var(--bg) 55%),
+                    var(--bg);
+                color: var(--text);
+                font-family: Arial, sans-serif;
+                display: grid;
+                place-items: center;
+                padding: 24px;
+            }
+
+            .app {
+                width: min(92vw, 560px);
+                background: rgba(26, 31, 43, 0.92);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 24px;
+                padding: 28px 22px;
+                box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
                 text-align: center;
-                padding-top: 50px;  
             }
-             
-            input {
-                padding: 10px;
-                font-size: 16px;
-                margin-top: 20px;
+
+            h1 {
+                margin: 0 0 16px;
+                font-size: 2rem;
             }
-            button {
-                padding: 10px 15px;
-                margin-left: 10px;
-                cursor: pointer;
+
+            .rock-wrap {
+                margin: 8px auto 18px;
             }
-            .bar{
-                width: 200px;
-                height: 10px;
-                background: #333;
-                margin: 10px auto;
+
+            #rockImage {
+                width: min(230px, 62vw);
+                aspect-ratio: 1 / 1;
+                object-fit: cover;
+                border-radius: 22px;
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+                transition: transform 0.2s ease, filter 0.2s ease;
+            }
+
+            #rockImage.bump {
+                transform: scale(1.04);
+            }
+
+            .mood {
+                color: var(--muted);
+                margin: 10px 0 16px;
+            }
+
+            .bar {
+                width: min(320px, 80vw);
+                height: 14px;
+                background: var(--track);
+                margin: 12px auto 10px;
+                border-radius: 999px;
+                overflow: hidden;
             }
 
             .fill {
                 height: 100%;
-                background: purple;
                 width: 50%;
+                background: var(--mid);
+                transition: width 0.3s ease, background 0.3s ease;
+            }
+
+            .stats {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+                margin: 18px 0 20px;
+                text-align: left;
+            }
+
+            .stat {
+                background: rgba(255, 255, 255, 0.04);
+                border-radius: 16px;
+                padding: 12px;
+            }
+
+            .stat-label {
+                display: block;
+                color: var(--muted);
+                font-size: 0.82rem;
+                margin-bottom: 4px;
+            }
+
+            .stat-value {
+                font-size: 0.98rem;
+            }
+
+            .feed-row {
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            input {
+                width: min(320px, 100%);
+                padding: 12px 14px;
+                border-radius: 14px;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                background: rgba(255, 255, 255, 0.06);
+                color: var(--text);
+                font-size: 16px;
+            }
+
+            button {
+                padding: 12px 16px;
+                border: 0;
+                border-radius: 14px;
+                background: var(--accent);
+                color: #171717;
+                font-weight: 700;
+                cursor: pointer;
+            }
+
+            #response {
+                min-height: 24px;
+                margin: 14px 0 8px;
+            }
+
+            .history {
+                margin-top: 20px;
+                text-align: left;
+            }
+
+            .history h2 {
+                margin: 0 0 10px;
+                font-size: 1rem;
+            }
+
+            #historyList {
+                margin: 0;
+                padding-left: 18px;
+                color: var(--muted);
+            }
+
+            #historyList li {
+                margin-bottom: 8px;
+            }
+
+            @media (max-width: 520px) {
+                .stats {
+                    grid-template-columns: 1fr;
+                }
+
+                .app {
+                    padding: 22px 18px;
+                }
             }
         </style>
     </head>
-
     <body>
-         <h1>My Pet Rock 🪨</h1>
-         <div id="rock" class="rock">😐</div>
-         <p id="happinessText">Happiness: 50</p>
-            <div class="bar">
-               <div id="fill" class="fill"></div>
+        <main class="app">
+            <h1>My Pet Rock</h1>
+
+            <div class="rock-wrap">
+                <img id="rockImage" src="download (2).jpg" alt="Your pet rock">
+                <p id="moodText" class="mood">Mood: Calm</p>
             </div>
 
-            <input id="quote" placeholder="type your quote..." onkeypress="if(event.key==='Enter') feedRock()">
-            <button onclick="feedRock()">Feed Rock</button>
+            <p id="happinessText">Happiness: 50</p>
+            <div class="bar">
+                <div id="fill" class="fill"></div>
+            </div>
+
+            <section class="stats">
+                <div class="stat">
+                    <span class="stat-label">Time decay</span>
+                    <span id="decayText" class="stat-value">Checking...</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Last fed</span>
+                    <span id="lastFedText" class="stat-value">Never</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Days alive</span>
+                    <span id="daysAliveText" class="stat-value">Day 1</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Last quote</span>
+                    <span id="lastQuote" class="stat-value">Nothing yet</span>
+                </div>
+            </section>
+
+            <div class="feed-row">
+                <input id="quote" placeholder="say something kind..." onkeypress="if(event.key==='Enter') feedRock()">
+                <button onclick="feedRock()">Feed Rock</button>
+            </div>
 
             <p id="response"></p>
-            <p id="lastQuote"></p>
+
+            <section class="history">
+                <h2>Recent Quotes</h2>
+                <ol id="historyList"></ol>
+            </section>
+        </main>
 
         <script>
-            // Load saved happiness or default to 50
-            let happiness = parseInt(localStorage.getItem("happiness")) || 50;
+            const MAX_HAPPINESS = 100;
+            const MIN_HAPPINESS = 0;
+            const DECAY_EVERY_MS = 30 * 60 * 1000;
+            const DECAY_AMOUNT = 5;
+            const POSITIVE_BOOST = 15;
+            const NEGATIVE_PENALTY = 12;
+            const QUOTE_HISTORY_LIMIT = 5;
 
-            const responses = [
-             "Rock appreciates the effort.",
-             "That helped… slightly.",
-             "Energy received.",
-             "Okay yeah, that was decent.",
-             "Rock is feeling something."
+            const ROCK_IMAGES = {
+                happy: "download (3).png",
+                neutral: "download (2).jpg",
+                sad: "raf,360x360,075,t,fafafa_ca443f4786.u2.jpg",
+                angry: "download (4).png"
+            };
+
+            const positiveResponses = [
+                "Rock appreciates the kindness.",
+                "That made the little stone feel seen.",
+                "Good energy received.",
+                "Rock is vibing with that.",
+                "That was nourishing."
             ];
-function updateUI() {
-    document.getElementById("happinessText").innerText = "Happiness: " + happiness;
-  
-  document.getElementById("fill").style.width = happiness + "%";
 
-  let mood = "😐";
-  if (happiness >= 80) {
-    mood = "😄";
-  } else if (happiness >= 60) {
-    mood = "🙂";
-  } else if (happiness >= 40) {
-    mood = "😐";
-  } else if (happiness >= 20) {
-    mood = "🙁";
-  } else {
-    mood = "😢";
-  }
-   document.getElementById("rock").innerText = mood;
-}
+            const negativeResponses = [
+                "Rock heard that and lost some sparkle.",
+                "Mean words detected. Happiness reduced.",
+                "That landed like a pebble to the heart.",
+                "Rock is not okay with that.",
+                "Kindness is part of the wellness plan."
+            ];
 
-function feedRock() {
-    let quote = document.getElementById("quote").value;
-    if (quote === "") return;
+            const negativePatterns = [
+                "u suck",
+                "you suck",
+                "stupid",
+                "dumb",
+                "hate you",
+                "i hate you",
+                "idiot",
+                "loser",
+                "ugly",
+                "worst",
+                "trash"
+            ];
 
-    happiness += 15;
-    if (happiness > 100) happiness = 100;
+            let happiness = loadNumber("happiness", 50);
+            let lastDecayAt = loadNumber("lastDecayAt", Date.now());
+            let lastFedAt = loadNumber("lastFedAt", 0);
+            let bornAt = loadNumber("bornAt", Date.now());
+            let quoteHistory = loadArray("quoteHistory", []);
 
-    let random = responses[Math.floor(Math.random() * responses.length)];
-    document.getElementById("response").innerText = random;
+            function loadNumber(key, fallback) {
+                const value = parseInt(localStorage.getItem(key), 10);
+                return Number.isNaN(value) ? fallback : value;
+            }
 
-    document.getElementById("lastQuote").innerText = "Last: " + quote;
-    document.getElementById("quote").value = "";
-     
-    // Save happiness to localStorage
-    localStorage.setItem("happiness", happiness);
-    updateUI();
-}
+            function loadArray(key, fallback) {
+                try {
+                    const raw = localStorage.getItem(key);
+                    return raw ? JSON.parse(raw) : fallback;
+                } catch {
+                    return fallback;
+                }
+            }
 
-updateUI();
+            function saveState() {
+                localStorage.setItem("happiness", String(happiness));
+                localStorage.setItem("lastDecayAt", String(lastDecayAt));
+                localStorage.setItem("lastFedAt", String(lastFedAt));
+                localStorage.setItem("bornAt", String(bornAt));
+                localStorage.setItem("quoteHistory", JSON.stringify(quoteHistory));
+            }
+
+            function clamp(value) {
+                return Math.max(MIN_HAPPINESS, Math.min(MAX_HAPPINESS, value));
+            }
+
+            function containsNegativeLanguage(text) {
+                const normalized = text.toLowerCase().trim();
+                return negativePatterns.some((pattern) => normalized.includes(pattern));
+            }
+
+            function applyDecay() {
+                const now = Date.now();
+                const elapsed = now - lastDecayAt;
+                const decaySteps = Math.floor(elapsed / DECAY_EVERY_MS);
+
+                if (decaySteps > 0) {
+                    happiness = clamp(happiness - (decaySteps * DECAY_AMOUNT));
+                    lastDecayAt += decaySteps * DECAY_EVERY_MS;
+                    saveState();
+                }
+            }
+
+            function formatRelativeTime(timestamp) {
+                if (!timestamp) return "Never";
+
+                const diff = Date.now() - timestamp;
+                const minute = 60 * 1000;
+                const hour = 60 * minute;
+                const day = 24 * hour;
+
+                if (diff < minute) return "just now";
+
+                if (diff < hour) {
+                    const minutes = Math.floor(diff / minute);
+                    return minutes + " minute" + (minutes === 1 ? "" : "s") + " ago";
+                }
+
+                if (diff < day) {
+                    const hours = Math.floor(diff / hour);
+                    return hours + " hour" + (hours === 1 ? "" : "s") + " ago";
+                }
+
+                const days = Math.floor(diff / day);
+                return days + " day" + (days === 1 ? "" : "s") + " ago";
+            }
+
+            function getDaysAlive() {
+                const dayMs = 24 * 60 * 60 * 1000;
+                return Math.max(1, Math.floor((Date.now() - bornAt) / dayMs) + 1);
+            }
+
+            function getMoodConfig() {
+                if (happiness >= 75) {
+                    return { label: "Happy", image: ROCK_IMAGES.happy, color: "#5bd18b" };
+                }
+
+                if (happiness >= 45) {
+                    return { label: "Calm", image: ROCK_IMAGES.neutral, color: "#7d8cff" };
+                }
+
+                if (happiness >= 20) {
+                    return { label: "Sad", image: ROCK_IMAGES.sad, color: "#ff9f6b" };
+                }
+
+                return { label: "Angry", image: ROCK_IMAGES.angry, color: "#ff7171" };
+            }
+
+            function animateRock() {
+                const image = document.getElementById("rockImage");
+                image.classList.remove("bump");
+                void image.offsetWidth;
+                image.classList.add("bump");
+            }
+
+            function renderHistory() {
+                const historyList = document.getElementById("historyList");
+                historyList.innerHTML = "";
+
+                if (quoteHistory.length === 0) {
+                    const emptyItem = document.createElement("li");
+                    emptyItem.textContent = "No quotes yet.";
+                    historyList.appendChild(emptyItem);
+                    return;
+                }
+
+                quoteHistory.forEach((entry) => {
+                    const item = document.createElement("li");
+                    item.textContent = entry.text + " (" + formatRelativeTime(entry.at) + ")";
+                    historyList.appendChild(item);
+                });
+            }
+
+            function updateUI() {
+                applyDecay();
+
+                const mood = getMoodConfig();
+                const timeUntilNextDecay = Math.max(
+                    0,
+                    Math.ceil((DECAY_EVERY_MS - (Date.now() - lastDecayAt)) / 60000)
+                );
+
+                document.getElementById("happinessText").innerText = "Happiness: " + happiness;
+                document.getElementById("fill").style.width = happiness + "%";
+                document.getElementById("fill").style.background = mood.color;
+                document.getElementById("moodText").innerText = "Mood: " + mood.label;
+                document.getElementById("rockImage").src = mood.image;
+                document.getElementById("decayText").innerText =
+                    "-" + DECAY_AMOUNT + " every 30 min, next in " + timeUntilNextDecay + " min";
+                document.getElementById("lastFedText").innerText = formatRelativeTime(lastFedAt);
+                document.getElementById("daysAliveText").innerText = "Day " + getDaysAlive();
+                document.getElementById("lastQuote").innerText =
+                    quoteHistory.length > 0 ? quoteHistory[0].text : "Nothing yet";
+
+                renderHistory();
+            }
+
+            function feedRock() {
+                const quoteInput = document.getElementById("quote");
+                const quote = quoteInput.value.trim();
+                if (!quote) return;
+
+                applyDecay();
+
+                if (containsNegativeLanguage(quote)) {
+                    happiness = clamp(happiness - NEGATIVE_PENALTY);
+                    document.getElementById("response").innerText =
+                        negativeResponses[Math.floor(Math.random() * negativeResponses.length)];
+                } else {
+                    happiness = clamp(happiness + POSITIVE_BOOST);
+                    document.getElementById("response").innerText =
+                        positiveResponses[Math.floor(Math.random() * positiveResponses.length)];
+                }
+
+                lastFedAt = Date.now();
+                lastDecayAt = Date.now();
+                quoteHistory.unshift({ text: quote, at: lastFedAt });
+                quoteHistory = quoteHistory.slice(0, QUOTE_HISTORY_LIMIT);
+                quoteInput.value = "";
+
+                saveState();
+                animateRock();
+                updateUI();
+            }
+
+            setInterval(updateUI, 60 * 1000);
+            updateUI();
         </script>
-
-        </body>
+    </body>
 </html>
