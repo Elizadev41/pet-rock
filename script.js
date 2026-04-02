@@ -1290,3 +1290,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initHabits();
     initQuotes();
 });
+
+
