@@ -1,57 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pet Rock</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <main class="app">
-            <h1>My Pet Rock</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Rock</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="badgePopup" class="badge-popup" aria-live="polite"></div>
 
-            <div class="rock-wrap">
-                <img id="rockImage" src="rock images/download (2).jpg" alt="Your pet rock">
-                <p id="moodText" class="mood">Mood: Calm</p>
+    <section id="welcomeScreen" class="welcome-screen">
+        <div class="welcome-card">
+            <p class="welcome-kicker">Welcome to Pet Rock</p>
+            <h1>Give your tiny companion a name</h1>
+            <p class="welcome-copy">Pick a random rock name, then start caring for your little companion.</p>
+            <div class="welcome-form">
+                <div id="rockNamePreview" class="welcome-name">Pebble</div>
+                <div class="welcome-actions">
+                    <button id="randomizeRockNameButton" type="button" class="welcome-button welcome-button-secondary">Random Name</button>
+                    <button id="startPetRockButton" type="button" class="welcome-button">Start Caring</button>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <p id="happinessText">Happiness: 50</p>
-            <div class="bar">
-                <div id="fill" class="fill"></div>
+    <main class="app">
+        <h1>My Pet Rock</h1>
+        <p id="rockIdentity" class="identity">Pebble the cheerful rock</p>
+
+        <div class="rock-wrap">
+            <img id="rockImage" src="rock images/download (2).jpg" alt="Your pet rock">
+            <p id="moodText" class="mood">Mood: Calm</p>
+        </div>
+
+        <p id="happinessText">Happiness: 50</p>
+        <div class="bar">
+            <div id="fill" class="fill"></div>
+        </div>
+        <div id="streakBanner" class="streak-banner hidden">2 day streak</div>
+
+        <section class="stats">
+            <div class="stat">
+                <span class="stat-label">Time decay</span>
+                <span id="decayText" class="stat-value">Checking...</span>
             </div>
-
-            <section class="stats">
-                <div class="stat">
-                    <span class="stat-label">Time decay</span>
-                    <span id="decayText" class="stat-value">Checking...</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-label">Last fed</span>
-                    <span id="lastFedText" class="stat-value">Never</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-label">Days alive</span>
-                    <span id="daysAliveText" class="stat-value">Day 1</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-label">Last quote</span>
-                    <span id="lastQuote" class="stat-value">Nothing yet</span>
-                </div>
-            </section>
-
-            <div class="feed-row">
-                <input id="quote" placeholder="say something kind..." onkeypress="if(event.key==='Enter') feedRock()">
-                <button onclick="feedRock()">Feed Rock</button>
+            <div class="stat">
+                <span class="stat-label">Last fed</span>
+                <span id="lastFedText" class="stat-value">Never</span>
             </div>
+            <div class="stat">
+                <span class="stat-label">Days alive</span>
+                <span id="daysAliveText" class="stat-value">Day 1</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Last quote</span>
+                <span id="lastQuote" class="stat-value">Nothing yet</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Current streak</span>
+                <span id="streakText" class="stat-value">0 days</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Best streak</span>
+                <span id="longestStreakText" class="stat-value">0 days</span>
+            </div>
+        </section>
 
-            <p id="response"></p>
+        <div id="feedSection" class="feed-section">
+            <input
+                id="quote"
+                placeholder="say something kind..."
+                autocomplete="off"
+            >
+            <button id="feedRockButton" type="button">Feed Rock</button>
+        </div>
 
-            <section class="history">
-                <h2>Recent Quotes</h2>
-                <ol id="historyList"></ol>
-            </section>
-        </main>
+        <div id="faintOverlay" class="faint-overlay hidden">
+            <div class="faint-card">
+                <p class="faint-title">Your rock has fainted from neglect...</p>
+                <button id="reviveRockButton" type="button" class="btn-revive">Revive Rock</button>
+                <p class="faint-note">Streak resets and happiness returns to 25.</p>
+            </div>
+        </div>
 
-        <script src="script.js" defer></script>
-    </body>
+        <p id="response" class="response-line">
+            <span id="responseText"></span>
+            <span id="qualityTag" class="quality-tag hidden"></span>
+        </p>
+
+        <section class="badges">
+            <h2>Achievements</h2>
+            <div id="badgeGrid" class="badge-grid"></div>
+        </section>
+
+        <section class="history">
+            <h2>Recent Quotes</h2>
+            <ol id="historyList"></ol>
+        </section>
+    </main>
+
+    <script src="script.js" defer></script>
+</body>
 </html>
