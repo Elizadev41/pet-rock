@@ -29,6 +29,7 @@ body {
     padding: 24px;
 }
 
+/* Welcome Screen (unchanged) */
 .welcome-screen {
     position: fixed;
     inset: 0;
@@ -102,19 +103,96 @@ body {
     flex-wrap: wrap;
 }
 
+/* Main App Container */
 .app {
     position: relative;
-    width: min(92vw, 620px);
+    width: min(92vw, 720px);
     background: rgba(26, 31, 43, 0.94);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 24px;
-    padding: 28px 22px;
+    padding: 0;
     box-shadow: 0 18px 50px var(--shadow);
+    overflow: hidden;
+}
+
+/* Tab Navigation */
+.tab-nav {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 8px 8px 0 8px;
+}
+
+.tab-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 8px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 12px 12px 0 0;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.tab-button:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+}
+
+.tab-button.active {
+    background: rgba(26, 31, 43, 0.94);
+    color: var(--accent);
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+}
+
+.tab-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.tab-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* Tab Content */
+.tab-content {
+    padding: 28px 22px;
+}
+
+.tab-panel {
+    display: none;
     text-align: center;
 }
 
-h1,
-h2 {
+.tab-panel.active {
+    display: block;
+}
+
+.tab-subtitle {
+    color: var(--muted);
+    margin: 8px 0 24px;
+    font-size: 0.95rem;
+}
+
+/* Base Styles */
+h1, h2, h3 {
     margin: 0;
 }
 
@@ -127,6 +205,44 @@ h2 {
     margin-bottom: 12px;
 }
 
+h3 {
+    font-size: 0.95rem;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    font-size: 16px;
+    font-family: inherit;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+button {
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--accent);
+    color: #171717;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    font-family: inherit;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(255, 217, 120, 0.18);
+}
+
+/* Rock Tab Styles (from original) */
 .identity {
     margin: 8px 0 18px;
     color: var(--accent);
@@ -219,30 +335,8 @@ h2 {
     flex-wrap: wrap;
 }
 
-input {
+.feed-section input {
     width: min(320px, 100%);
-    padding: 12px 14px;
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.06);
-    color: var(--text);
-    font-size: 16px;
-}
-
-button {
-    padding: 12px 16px;
-    border: 0;
-    border-radius: 14px;
-    background: var(--accent);
-    color: #171717;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 18px rgba(255, 217, 120, 0.18);
 }
 
 .response-line {
@@ -272,8 +366,7 @@ button:hover {
     background: var(--gold);
 }
 
-.badges,
-.history {
+.badges, .history {
     margin-top: 20px;
     text-align: left;
 }
@@ -389,41 +482,408 @@ button:hover {
     opacity: 1;
 }
 
+/* Journal Styles */
+.journal-editor {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.journal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.journal-date {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.mood-selector {
+    margin-bottom: 16px;
+}
+
+.mood-selector label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.mood-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.mood-btn {
+    padding: 10px;
+    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+}
+
+.mood-btn.selected {
+    background: var(--accent);
+    color: #171717;
+}
+
+.journal-actions {
+    margin-top: 12px;
+}
+
+.journal-entries {
+    text-align: left;
+}
+
+.entry-list {
+    display: grid;
+    gap: 12px;
+}
+
+.entry-card {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 14px;
+    padding: 14px;
+}
+
+.entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.entry-date {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.entry-mood {
+    font-size: 1.1rem;
+}
+
+.entry-text {
+    color: var(--text);
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+/* Pomodoro Timer Styles */
+.pomodoro-container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.timer-display {
+    margin-bottom: 24px;
+}
+
+.timer-circle {
+    width: 240px;
+    height: 240px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: linear-gradient(180deg, rgba(125, 140, 255, 0.15), rgba(125, 140, 255, 0.05));
+    border: 4px solid var(--mid);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.timer-text {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+
+.timer-label {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.timer-btn {
+    min-width: 100px;
+}
+
+.timer-btn.secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+}
+
+.timer-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.task-section {
+    text-align: left;
+    margin-top: 24px;
+}
+
+.task-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.task-input input {
+    flex: 1;
+}
+
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-item {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.task-text {
+    flex: 1;
+}
+
+.task-text.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+/* Habits Styles */
+.habit-cards {
+    display: grid;
+    gap: 16px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.habit-card {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 18px;
+    padding: 18px;
+    text-align: left;
+}
+
+.habit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.habit-count {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.glass-container {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.water-glass {
+    width: 32px;
+    height: 40px;
+    border: 2px solid var(--mid);
+    border-radius: 4px;
+    position: relative;
+    background: transparent;
+    transition: background 0.3s ease;
+}
+
+.water-glass.filled {
+    background: linear-gradient(180deg, transparent 20%, var(--mid) 20%);
+}
+
+.sleep-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.sleep-input input {
+    max-width: 120px;
+}
+
+.habit-btn {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+}
+
+.habit-btn.completed {
+    background: var(--good);
+    color: #171717;
+}
+
+.habit-note {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.habit-streak {
+    margin: 8px 0 0;
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+/* Music Styles */
+.music-grid {
+    display: grid;
+    gap: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.music-card {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 18px;
+    padding: 16px;
+}
+
+.music-card h3 {
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+/* Quotes Styles */
+.quote-display {
+    max-width: 500px;
+    margin: 0 auto 32px;
+}
+
+.quote-card {
+    background: linear-gradient(180deg, rgba(125, 140, 255, 0.12), rgba(255, 255, 255, 0.04));
+    border-radius: 20px;
+    padding: 32px 24px;
+    margin-bottom: 16px;
+}
+
+.daily-quote-text {
+    font-size: 1.35rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin: 0 0 16px;
+    font-style: italic;
+}
+
+.daily-quote-author {
+    color: var(--muted);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.quote-btn {
+    background: var(--mid);
+}
+
+.saved-quotes {
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.saved-quotes-list {
+    display: grid;
+    gap: 12px;
+}
+
+.empty-state {
+    color: var(--muted);
+    text-align: center;
+    padding: 20px;
+    font-size: 0.95rem;
+}
+
 .hidden {
     display: none !important;
 }
 
 @keyframes pulse {
-    0%,
-    100% {
+    0%, 100% {
         box-shadow: 0 0 0 0 rgba(243, 205, 98, 0.3);
     }
-
     50% {
         box-shadow: 0 0 0 14px rgba(243, 205, 98, 0);
     }
 }
 
-@media (max-width: 520px) {
-    .stats,
-    .badge-grid {
+/* Responsive */
+@media (max-width: 640px) {
+    .tab-nav {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .tab-label {
+        font-size: 0.65rem;
+    }
+    
+    .tab-icon {
+        font-size: 1.2rem;
+    }
+    
+    .stats, .badge-grid {
         grid-template-columns: 1fr;
     }
-
-    .app {
-        padding: 22px 18px;
+    
+    .mood-options {
+        grid-template-columns: repeat(2, 1fr);
     }
-
-    .feed-section {
-        flex-direction: column;
+    
+    .timer-circle {
+        width: 200px;
+        height: 200px;
     }
+    
+    .timer-text {
+        font-size: 2.5rem;
+    }
+}
 
+@media (max-width: 420px) {
+    .tab-content {
+        padding: 20px 16px;
+    }
+    
     .welcome-actions {
         flex-direction: column;
     }
-
-    input,
-    button {
+    
+    input, button {
         width: 100%;
     }
 }

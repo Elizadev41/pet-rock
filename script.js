@@ -788,3 +788,505 @@ window.chooseRandomRockName = chooseRandomRockName;
 setupEventListeners();
 setInterval(updateUI, 60 * 1000);
 updateUI();
+
+// ============================================
+// TAB NAVIGATION SYSTEM
+// ============================================
+
+function initTabs() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetTab = button.dataset.tab;
+            
+            // Remove active class from all buttons and panels
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabPanels.forEach(panel => panel.classList.remove('active'));
+            
+            // Add active class to clicked button and corresponding panel
+            button.classList.add('active');
+            document.getElementById(targetTab + 'Tab').classList.add('active');
+            
+            // Save active tab
+            localStorage.setItem('activeTab', targetTab);
+        });
+    });
+    
+    // Restore last active tab
+    const savedTab = localStorage.getItem('activeTab') || 'rock';
+    const savedButton = document.querySelector(`[data-tab="${savedTab}"]`);
+    if (savedButton) {
+        savedButton.click();
+    }
+}
+
+// ============================================
+// JOURNAL TAB FUNCTIONALITY
+// ============================================
+
+const journalState = {
+    entries: JSON.parse(localStorage.getItem('journalEntries') || '[]'),
+    todayMood: null
+};
+
+function initJournal() {
+    updateJournalDate();
+    renderJournalEntries();
+    
+    // Mood selector
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            journalState.todayMood = btn.dataset.mood;
+        });
+    });
+    
+    // Save journal entry
+    document.getElementById('saveJournalButton').addEventListener('click', saveJournalEntry);
+}
+
+function updateJournalDate() {
+    const now = new Date();
+    const formatted = now.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+    document.getElementById('journalDate').textContent = formatted;
+}
+
+function saveJournalEntry() {
+    const textarea = document.getElementById('journalTextarea');
+    const text = textarea.value.trim();
+    
+    if (!text) {
+        alert('Please write something in your journal first!');
+        return;
+    }
+    
+    const entry = {
+        text: text,
+        mood: journalState.todayMood || 'okay',
+        date: new Date().toISOString(),
+        dateStamp: getLocalDateStamp()
+    };
+    
+    // Check if entry for today already exists
+    const todayStamp = getLocalDateStamp();
+    const existingIndex = journalState.entries.findIndex(e => e.dateStamp === todayStamp);
+    
+    if (existingIndex >= 0) {
+        journalState.entries[existingIndex] = entry;
+    } else {
+        journalState.entries.unshift(entry);
+    }
+    
+    // Keep only last 30 entries
+    journalState.entries = journalState.entries.slice(0, 30);
+    
+    localStorage.setItem('journalEntries', JSON.stringify(journalState.entries));
+    
+    // Give rock happiness boost
+    if (state.rockName) {
+        state.happiness = clamp(state.happiness + 5);
+        state.maxHappinessSeen = Math.max(state.maxHappinessSeen, state.happiness);
+        saveState();
+        updateUI();
+    }
+    
+    // Clear form
+    textarea.value = '';
+    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+    journalState.todayMood = null;
+    
+    renderJournalEntries();
+    showFeedback('Journal saved! +5 happiness');
+}
+
+function renderJournalEntries() {
+    const list = document.getElementById('journalList');
+    
+    if (journalState.entries.length === 0) {
+        list.innerHTML = '<p class="empty-state">No entries yet. Start journaling today!</p>';
+        return;
+    }
+    
+    const moodEmojis = {        amazing: 'Amazing',        good: 'Good',        okay: 'Okay',        rough: 'Rough'
+    };
+    
+    list.innerHTML = journalState.entries.map(entry => {
+        const date = new Date(entry.date);
+        const formatted = date.toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric',
+            year: 'numeric'
+        });
+        
+        return `
+            <div class="entry-card">
+                <div class="entry-header">
+                    <span class="entry-date">${formatted}</span>
+                    <span class="entry-mood">${moodEmojis[entry.mood] || 'Okay'}</span>
+                </div>
+                <p class="entry-text">${entry.text}</p>
+            </div>
+        `;
+    }).join('');
+}
+
+// ============================================
+// POMODORO TIMER FUNCTIONALITY
+// ============================================
+
+const pomodoroState = {
+    timeLeft: 25 * 60, // 25 minutes in seconds
+    isRunning: false,
+    isWorkSession: true,
+    interval: null,
+    sessionsToday: loadNumber('pomodoroSessionsToday', 0),
+    sessionsTotal: loadNumber('pomodoroSessionsTotal', 0),
+    lastSessionDate: loadString('pomodoroLastDate', ''),
+    tasks: JSON.parse(localStorage.getItem('pomodoroTasks') || '[]')
+};
+
+function initPomodoro() {
+    updateTimerDisplay();
+    updatePomodoroStats();
+    renderTasks();
+    
+    document.getElementById('startTimerButton').addEventListener('click', startTimer);
+    document.getElementById('pauseTimerButton').addEventListener('click', pauseTimer);
+    document.getElementById('resetTimerButton').addEventListener('click', resetTimer);
+    document.getElementById('addTaskButton').addEventListener('click', addTask);
+    
+    // Check if it's a new day
+    const today = getLocalDateStamp();
+    if (pomodoroState.lastSessionDate !== today) {
+        pomodoroState.sessionsToday = 0;
+        pomodoroState.lastSessionDate = today;
+        savePomodoroState();
+    }
+}
+
+function startTimer() {
+    pomodoroState.isRunning = true;
+    document.getElementById('startTimerButton').classList.add('hidden');
+    document.getElementById('pauseTimerButton').classList.remove('hidden');
+    
+    pomodoroState.interval = setInterval(() => {
+        pomodoroState.timeLeft--;
+        updateTimerDisplay();
+        
+        if (pomodoroState.timeLeft <= 0) {
+            timerComplete();
+        }
+    }, 1000);
+}
+
+function pauseTimer() {
+    pomodoroState.isRunning = false;
+    clearInterval(pomodoroState.interval);
+    document.getElementById('startTimerButton').classList.remove('hidden');
+    document.getElementById('pauseTimerButton').classList.add('hidden');
+}
+
+function resetTimer() {
+    pauseTimer();
+    pomodoroState.timeLeft = pomodoroState.isWorkSession ? 25 * 60 : 5 * 60;
+    updateTimerDisplay();
+}
+
+function timerComplete() {
+    pauseTimer();
+    
+    if (pomodoroState.isWorkSession) {
+        // Work session complete
+        pomodoroState.sessionsToday++;
+        pomodoroState.sessionsTotal++;
+        pomodoroState.lastSessionDate = getLocalDateStamp();
+        savePomodoroState();
+        updatePomodoroStats();
+        
+        // Give rock happiness boost
+        if (state.rockName) {
+            state.happiness = clamp(state.happiness + 3);
+            state.maxHappinessSeen = Math.max(state.maxHappinessSeen, state.happiness);
+            saveState();
+            updateUI();
+        }
+        
+        showFeedback('Work session complete! +3 happiness');
+        
+        // Switch to break
+        pomodoroState.isWorkSession = false;
+        pomodoroState.timeLeft = 5 * 60;
+    } else {
+        // Break complete
+        showFeedback('Break over! Ready for another session?');
+        pomodoroState.isWorkSession = true;
+        pomodoroState.timeLeft = 25 * 60;
+    }
+    
+    updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(pomodoroState.timeLeft / 60);
+    const seconds = pomodoroState.timeLeft % 60;
+    const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    document.getElementById('timerText').textContent = display;
+    document.getElementById('timerLabel').textContent = pomodoroState.isWorkSession ? 'Work Session' : 'Break Time';
+}
+
+function updatePomodoroStats() {
+    document.getElementById('sessionsToday').textContent = pomodoroState.sessionsToday;
+    document.getElementById('sessionsTotal').textContent = pomodoroState.sessionsTotal;
+}
+
+function savePomodoroState() {
+    localStorage.setItem('pomodoroSessionsToday', pomodoroState.sessionsToday);
+    localStorage.setItem('pomodoroSessionsTotal', pomodoroState.sessionsTotal);
+    localStorage.setItem('pomodoroLastDate', pomodoroState.lastSessionDate);
+}
+
+function addTask() {
+    const input = document.getElementById('taskInput');
+    const text = input.value.trim();
+    
+    if (!text) return;
+    
+    pomodoroState.tasks.push({
+        id: Date.now(),
+        text: text,
+        completed: false
+    });
+    
+    localStorage.setItem('pomodoroTasks', JSON.stringify(pomodoroState.tasks));
+    input.value = '';
+    renderTasks();
+}
+
+function toggleTask(id) {
+    const task = pomodoroState.tasks.find(t => t.id === id);
+    if (task) {
+        task.completed = !task.completed;
+        localStorage.setItem('pomodoroTasks', JSON.stringify(pomodoroState.tasks));
+        renderTasks();
+    }
+}
+
+function deleteTask(id) {
+    pomodoroState.tasks = pomodoroState.tasks.filter(t => t.id !== id);
+    localStorage.setItem('pomodoroTasks', JSON.stringify(pomodoroState.tasks));
+    renderTasks();
+}
+
+function renderTasks() {
+    const list = document.getElementById('taskList');
+    
+    if (pomodoroState.tasks.length === 0) {
+        list.innerHTML = '<p class="empty-state">No tasks yet. Add what you\'re working on!</p>';
+        return;
+    }
+    
+    list.innerHTML = pomodoroState.tasks.map(task => `
+        <li class="task-item">
+            <input 
+                type="checkbox" 
+                class="task-checkbox" 
+                ${task.completed ? 'checked' : ''}
+                onchange="toggleTask(${task.id})"
+            >
+            <span class="task-text ${task.completed ? 'completed' : ''}">${task.text}</span>
+        </li>
+    `).join('');
+}
+
+// ============================================
+// HABITS TAB FUNCTIONALITY
+// ============================================
+
+const habitsState = {
+    water: loadNumber('waterToday', 0),
+    sleep: loadNumber('sleepToday', 0),
+    exercise: loadBoolean('exerciseToday', false),
+    exerciseStreak: loadNumber('exerciseStreak', 0),
+    lastHabitDate: loadString('lastHabitDate', '')
+};
+
+function initHabits() {
+    checkHabitsReset();
+    renderWaterGlasses();
+    updateHabitsUI();
+    
+    document.getElementById('addWaterButton').addEventListener('click', addWater);
+    document.getElementById('logSleepButton').addEventListener('click', logSleep);
+    document.getElementById('logExerciseButton').addEventListener('click', logExercise);
+}
+
+function checkHabitsReset() {
+    const today = getLocalDateStamp();
+    if (habitsState.lastHabitDate !== today) {
+        habitsState.water = 0;
+        habitsState.sleep = 0;
+        habitsState.exercise = false;
+        habitsState.lastHabitDate = today;
+        saveHabitsState();
+    }
+}
+
+function addWater() {
+    if (habitsState.water < 8) {
+        habitsState.water++;
+        saveHabitsState();
+        renderWaterGlasses();
+        updateHabitsUI();
+        
+        if (habitsState.water === 8) {
+            if (state.rockName) {
+                state.happiness = clamp(state.happiness + 5);
+                saveState();
+                updateUI();
+            }
+            showFeedback('Hydration goal complete! +5 happiness');
+        }
+    }
+}
+
+function renderWaterGlasses() {
+    const container = document.getElementById('waterGlasses');
+    container.innerHTML = Array(8).fill(0).map((_, i) => 
+        `<div class="water-glass ${i < habitsState.water ? 'filled' : ''}"></div>`
+    ).join('');
+}
+
+function logSleep() {
+    const input = document.getElementById('sleepInput');
+    const hours = parseFloat(input.value);
+    
+    if (isNaN(hours) || hours < 0 || hours > 24) {
+        alert('Please enter valid sleep hours (0-24)');
+        return;
+    }
+    
+    habitsState.sleep = hours;
+    saveHabitsState();
+    updateHabitsUI();
+    input.value = '';
+    
+    if (hours >= 7 && hours <= 9) {
+        if (state.rockName) {
+            state.happiness = clamp(state.happiness + 3);
+            saveState();
+            updateUI();
+        }
+        showFeedback('Great sleep! +3 happiness');
+    }
+}
+
+function logExercise() {
+    if (!habitsState.exercise) {
+        habitsState.exercise = true;
+        habitsState.exerciseStreak++;
+        saveHabitsState();
+        updateHabitsUI();
+        
+        if (state.rockName) {
+            state.happiness = clamp(state.happiness + 4);
+            saveState();
+            updateUI();
+        }
+        showFeedback('Exercise logged! +4 happiness');
+    }
+}
+
+function updateHabitsUI() {
+    document.getElementById('waterCount').textContent = `${habitsState.water} / 8 glasses`;
+    document.getElementById('sleepHours').textContent = 
+        habitsState.sleep > 0 ? `${habitsState.sleep} hours` : 'Not logged today';
+    document.getElementById('exerciseStatus').textContent = 
+        habitsState.exercise ? 'Done today!' : 'Not done today';
+    document.getElementById('exerciseStreak').textContent = 
+        `Streak: ${habitsState.exerciseStreak} days`;
+    
+    const exerciseBtn = document.getElementById('logExerciseButton');
+    exerciseBtn.classList.toggle('completed', habitsState.exercise);
+    exerciseBtn.textContent = habitsState.exercise ? 'Completed' : 'Mark Complete';
+}
+
+function saveHabitsState() {
+    localStorage.setItem('waterToday', habitsState.water);
+    localStorage.setItem('sleepToday', habitsState.sleep);
+    localStorage.setItem('exerciseToday', habitsState.exercise);
+    localStorage.setItem('exerciseStreak', habitsState.exerciseStreak);
+    localStorage.setItem('lastHabitDate', habitsState.lastHabitDate);
+}
+
+// ============================================
+// QUOTES TAB FUNCTIONALITY
+// ============================================
+
+const quotesData = [
+    { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+    { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+    { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+    { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+    { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+    { text: "Everything you've ever wanted is on the other side of fear.", author: "George Addair" },
+    { text: "Believe in yourself. You are braver than you think, more talented than you know, and capable of more than you imagine.", author: "Roy T. Bennett" },
+    { text: "I learned that courage was not the absence of fear, but the triumph over it.", author: "Nelson Mandela" },
+    { text: "There is nothing impossible to they who will try.", author: "Alexander the Great" },
+    { text: "The only impossible journey is the one you never begin.", author: "Tony Robbins" }
+];
+
+let currentQuoteIndex = Math.floor(Math.random() * quotesData.length);
+
+function initQuotes() {
+    displayQuote();
+    document.getElementById('newQuoteButton').addEventListener('click', newQuote);
+}
+
+function displayQuote() {
+    const quote = quotesData[currentQuoteIndex];
+    document.getElementById('dailyQuoteText').textContent = `"${quote.text}"`;
+    document.getElementById('dailyQuoteAuthor').textContent = `- ${quote.author}`;
+}
+
+function newQuote() {
+    currentQuoteIndex = (currentQuoteIndex + 1) % quotesData.length;
+    displayQuote();
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+function showFeedback(message) {
+    const popup = document.getElementById('badgePopup');
+    popup.textContent = message;
+    popup.classList.add('show');
+    
+    setTimeout(() => {
+        popup.classList.remove('show');
+    }, 2400);
+}
+
+// Make functions globally available for inline event handlers
+window.toggleTask = toggleTask;
+window.deleteTask = deleteTask;
+
+// ============================================
+// INITIALIZE EVERYTHING
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    initTabs();
+    initJournal();
+    initPomodoro();
+    initHabits();
+    initQuotes();
+});
