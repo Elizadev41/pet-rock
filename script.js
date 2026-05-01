@@ -469,7 +469,7 @@ function renderHistory() {
 
     if (state.quoteHistory.length === 0) {
         const emptyItem = document.createElement("li");
-        emptyItem.textContent = "No quotes yet.";
+        emptyItem.textContent = "No messages yet.";
         historyList.appendChild(emptyItem);
         return;
     }
