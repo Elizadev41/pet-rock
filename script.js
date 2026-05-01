@@ -6,7 +6,7 @@ const BASIC_BOOST = 2;
 const GOOD_BOOST = 4;
 const AMAZING_BOOST = 8;
 const NEGATIVE_PENALTY = 12;
-const QUOTE_HISTORY_LIMIT = 8;
+const QUOTE_HISTORY_LIMIT = 5;
 
 const ROCK_IMAGES = {
     happy: "rock images/download (3).png",
@@ -123,8 +123,20 @@ const NEGATIVE_PATTERNS = [
     "death",
     "worthless",
     "garbage",
-    "trash"
-
+    "trash",
+    "lame",
+    "stink",
+    "disgusting",
+    "gross",
+    "sucks",
+    "suck",
+    "crap",
+    "fool",
+    "annoying",
+    "pathetic",
+    "67",
+    "69",
+    "41"
 ];
 
 const BADGE_DEFS = [
@@ -195,12 +207,6 @@ const BADGE_DEFS = [
         check: (state) => state.totalRevives >= 1
     },
     {
-        id: "amazing_quote",
-        title: "Poet of Stone",
-        description: "Write an Amazing quality quote.",
-        check: (state) => state.bestQualityTier === "Amazing" || state.amazingQuotes >= 1
-    },
-    {
         id: "kind_keeper",
         title: "Heart of Gold",
         description: "Send 25 positive quotes.",
@@ -225,7 +231,6 @@ const state = {
     badges: loadArray("badges", []),
     maxHappinessSeen: loadNumber("maxHappinessSeen", 50),
     totalRevives: loadNumber("totalRevives", 0),
-    amazingQuotes: loadNumber("amazingQuotes", 0),
     bestQualityTier: loadString("bestQualityTier", ""),
     rockName: loadString("rockName", ""),
     isFainted: loadBoolean("isFainted", false)
@@ -276,7 +281,6 @@ function saveState() {
     localStorage.setItem("badges", JSON.stringify(state.badges));
     localStorage.setItem("maxHappinessSeen", String(state.maxHappinessSeen));
     localStorage.setItem("totalRevives", String(state.totalRevives));
-    localStorage.setItem("amazingQuotes", String(state.amazingQuotes));
     localStorage.setItem("bestQualityTier", state.bestQualityTier);
     localStorage.setItem("rockName", state.rockName);
     localStorage.setItem("isFainted", String(state.isFainted));
@@ -490,8 +494,7 @@ function getBadgeState() {
         longestStreak: state.longestStreak,
         maxHappinessSeen: state.maxHappinessSeen,
         totalRevives: state.totalRevives,
-        bestQualityTier: state.bestQualityTier,
-        amazingQuotes: state.amazingQuotes
+        bestQualityTier: state.bestQualityTier
     };
 }
 
@@ -723,7 +726,7 @@ function feedRock() {
         setBestQuality(quality.label);
 
         if (quality.label === "Amazing") {
-            state.amazingQuotes += 1;
+            // Removed amazingQuotes increment
         }
     }
 
@@ -1107,161 +1110,6 @@ function renderTasks() {
 }
 
 // ============================================
-// HABITS TAB FUNCTIONALITY
-// ============================================
-
-const habitsState = {
-    water: loadNumber('waterToday', 0),
-    sleep: loadNumber('sleepToday', 0),
-    exercise: loadBoolean('exerciseToday', false),
-    exerciseStreak: loadNumber('exerciseStreak', 0),
-    lastHabitDate: loadString('lastHabitDate', '')
-};
-
-function initHabits() {
-    checkHabitsReset();
-    renderWaterGlasses();
-    updateHabitsUI();
-    
-    document.getElementById('addWaterButton').addEventListener('click', addWater);
-    document.getElementById('logSleepButton').addEventListener('click', logSleep);
-    document.getElementById('logExerciseButton').addEventListener('click', logExercise);
-}
-
-function checkHabitsReset() {
-    const today = getLocalDateStamp();
-    if (habitsState.lastHabitDate !== today) {
-        habitsState.water = 0;
-        habitsState.sleep = 0;
-        habitsState.exercise = false;
-        habitsState.lastHabitDate = today;
-        saveHabitsState();
-    }
-}
-
-function addWater() {
-    if (habitsState.water < 8) {
-        habitsState.water++;
-        saveHabitsState();
-        renderWaterGlasses();
-        updateHabitsUI();
-        
-        if (habitsState.water === 8) {
-            if (state.rockName) {
-                state.happiness = clamp(state.happiness + 5);
-                saveState();
-                updateUI();
-            }
-            showFeedback('Hydration goal complete! +5 happiness');
-        }
-    }
-}
-
-function renderWaterGlasses() {
-    const container = document.getElementById('waterGlasses');
-    container.innerHTML = Array(8).fill(0).map((_, i) => 
-        `<div class="water-glass ${i < habitsState.water ? 'filled' : ''}"></div>`
-    ).join('');
-}
-
-function logSleep() {
-    const input = document.getElementById('sleepInput');
-    const hours = parseFloat(input.value);
-    
-    if (isNaN(hours) || hours < 0 || hours > 24) {
-        alert('Please enter valid sleep hours (0-24)');
-        return;
-    }
-    
-    habitsState.sleep = hours;
-    saveHabitsState();
-    updateHabitsUI();
-    input.value = '';
-    
-    if (hours >= 7 && hours <= 9) {
-        if (state.rockName) {
-            state.happiness = clamp(state.happiness + 3);
-            saveState();
-            updateUI();
-        }
-        showFeedback('Great sleep! +3 happiness');
-    }
-}
-
-function logExercise() {
-    if (!habitsState.exercise) {
-        habitsState.exercise = true;
-        habitsState.exerciseStreak++;
-        saveHabitsState();
-        updateHabitsUI();
-        
-        if (state.rockName) {
-            state.happiness = clamp(state.happiness + 4);
-            saveState();
-            updateUI();
-        }
-        showFeedback('Exercise logged! +4 happiness');
-    }
-}
-
-function updateHabitsUI() {
-    document.getElementById('waterCount').textContent = `${habitsState.water} / 8 glasses`;
-    document.getElementById('sleepHours').textContent = 
-        habitsState.sleep > 0 ? `${habitsState.sleep} hours` : 'Not logged today';
-    document.getElementById('exerciseStatus').textContent = 
-        habitsState.exercise ? 'Done today!' : 'Not done today';
-    document.getElementById('exerciseStreak').textContent = 
-        `Streak: ${habitsState.exerciseStreak} days`;
-    
-    const exerciseBtn = document.getElementById('logExerciseButton');
-    exerciseBtn.classList.toggle('completed', habitsState.exercise);
-    exerciseBtn.textContent = habitsState.exercise ? 'Completed' : 'Mark Complete';
-}
-
-function saveHabitsState() {
-    localStorage.setItem('waterToday', habitsState.water);
-    localStorage.setItem('sleepToday', habitsState.sleep);
-    localStorage.setItem('exerciseToday', habitsState.exercise);
-    localStorage.setItem('exerciseStreak', habitsState.exerciseStreak);
-    localStorage.setItem('lastHabitDate', habitsState.lastHabitDate);
-}
-
-// ============================================
-// QUOTES TAB FUNCTIONALITY
-// ============================================
-
-const quotesData = [
-    { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-    { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
-    { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
-    { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
-    { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
-    { text: "Everything you've ever wanted is on the other side of fear.", author: "George Addair" },
-    { text: "Believe in yourself. You are braver than you think, more talented than you know, and capable of more than you imagine.", author: "Roy T. Bennett" },
-    { text: "I learned that courage was not the absence of fear, but the triumph over it.", author: "Nelson Mandela" },
-    { text: "There is nothing impossible to they who will try.", author: "Alexander the Great" },
-    { text: "The only impossible journey is the one you never begin.", author: "Tony Robbins" }
-];
-
-let currentQuoteIndex = Math.floor(Math.random() * quotesData.length);
-
-function initQuotes() {
-    displayQuote();
-    document.getElementById('newQuoteButton').addEventListener('click', newQuote);
-}
-
-function displayQuote() {
-    const quote = quotesData[currentQuoteIndex];
-    document.getElementById('dailyQuoteText').textContent = `"${quote.text}"`;
-    document.getElementById('dailyQuoteAuthor').textContent = `- ${quote.author}`;
-}
-
-function newQuote() {
-    currentQuoteIndex = (currentQuoteIndex + 1) % quotesData.length;
-    displayQuote();
-}
-
-// ============================================
 // UTILITY FUNCTIONS
 // ============================================
 
@@ -1287,8 +1135,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initTabs();
     initJournal();
     initPomodoro();
-    initHabits();
-    initQuotes();
 });
 
 

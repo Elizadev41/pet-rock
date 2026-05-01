@@ -678,89 +678,6 @@ button:hover {
     opacity: 0.5;
 }
 
-/* Habits Styles */
-.habit-cards {
-    display: grid;
-    gap: 16px;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.habit-card {
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 18px;
-    padding: 18px;
-    text-align: left;
-}
-
-.habit-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
-.habit-count {
-    color: var(--accent);
-    font-weight: 700;
-    font-size: 0.9rem;
-}
-
-.glass-container {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
-}
-
-.water-glass {
-    width: 32px;
-    height: 40px;
-    border: 2px solid var(--mid);
-    border-radius: 4px;
-    position: relative;
-    background: transparent;
-    transition: background 0.3s ease;
-}
-
-.water-glass.filled {
-    background: linear-gradient(180deg, transparent 20%, var(--mid) 20%);
-}
-
-.sleep-input {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 8px;
-}
-
-.sleep-input input {
-    max-width: 120px;
-}
-
-.habit-btn {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.08);
-    color: var(--text);
-}
-
-.habit-btn.completed {
-    background: var(--good);
-    color: #171717;
-}
-
-.habit-note {
-    margin: 8px 0 0;
-    color: var(--muted);
-    font-size: 0.85rem;
-}
-
-.habit-streak {
-    margin: 8px 0 0;
-    color: var(--accent);
-    font-size: 0.9rem;
-    font-weight: 700;
-}
-
 /* Music Styles */
 .music-grid {
     display: grid;
@@ -781,52 +698,22 @@ button:hover {
 }
 
 /* Quotes Styles */
-.quote-display {
-    max-width: 500px;
-    margin: 0 auto 32px;
-}
-
-.quote-card {
-    background: linear-gradient(180deg, rgba(125, 140, 255, 0.12), rgba(255, 255, 255, 0.04));
-    border-radius: 20px;
-    padding: 32px 24px;
-    margin-bottom: 16px;
-}
-
-.daily-quote-text {
-    font-size: 1.35rem;
-    line-height: 1.6;
-    color: var(--text);
-    margin: 0 0 16px;
-    font-style: italic;
-}
-
-.daily-quote-author {
-    color: var(--muted);
-    font-size: 1rem;
-    margin: 0;
-}
-
-.quote-btn {
-    background: var(--mid);
-}
-
-.saved-quotes {
-    text-align: left;
+.music-grid {
+    display: grid;
+    gap: 16px;
     max-width: 600px;
     margin: 0 auto;
 }
 
-.saved-quotes-list {
-    display: grid;
-    gap: 12px;
+.music-card {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 18px;
+    padding: 16px;
 }
 
-.empty-state {
-    color: var(--muted);
-    text-align: center;
-    padding: 20px;
-    font-size: 0.95rem;
+.music-card h3 {
+    margin-bottom: 12px;
+    text-align: left;
 }
 
 .hidden {
