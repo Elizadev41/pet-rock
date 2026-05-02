@@ -18,8 +18,8 @@ I was using an app called Widget Table and got bored, so I decided to try making
 ## How to Use
 
 1. Use the welcome screen to randomize a rock name or start with the default.
-2. Click `Start Journey` to enter the app.
-3. In the Rock tab, type a kind message and click `Feed Rock` to boost happiness.
+2. Click **Start Journey** to enter the app.
+3. In the Rock tab, type a kind message and click **Feed Rock** to boost happiness.
 4. Watch the rock's mood and happiness bar update as you interact.
 5. Open the Journal tab to write and save daily entries.
 6. Use the Focus tab to track work sessions and add tasks.
