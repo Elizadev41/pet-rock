@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Rock Wellness Hub</title>
+    <title>pet rock</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,14 +12,14 @@
     <!-- Welcome Screen (unchanged) -->
     <section id="welcomeScreen" class="welcome-screen">
         <div class="welcome-card">
-            <p class="welcome-kicker">Welcome to Pet Rock Wellness Hub</p>
-            <h1>Give your tiny companion a name</h1>
-            <p class="welcome-copy">Pick a random rock name, then start your wellness journey together.</p>
+            <p class="welcome-kicker">you found a rock</p>
+            <h1>name it i guess</h1>
+            <p class="welcome-copy">idk just pick something. or hit random. rocks don't really care.</p>
             <div class="welcome-form">
                 <div id="rockNamePreview" class="welcome-name">Pebble</div>
                 <div class="welcome-actions">
-                    <button id="randomizeRockNameButton" type="button" class="welcome-button welcome-button-secondary">Random Name</button>
-                    <button id="startPetRockButton" type="button" class="welcome-button">Start Journey</button>
+                    <button id="randomizeRockNameButton" type="button" class="welcome-button welcome-button-secondary">gimme another</button>
+                    <button id="startPetRockButton" type="button" class="welcome-button">ok cool</button>
                 </div>
             </div>
         </div>
@@ -31,15 +31,15 @@
         <nav class="tab-nav">
             <button class="tab-button active" data-tab="rock">
                 <span class="tab-icon">R</span>
-                <span class="tab-label">Rock</span>
+                <span class="tab-label">rock</span>
             </button>
             <button class="tab-button" data-tab="journal">
                 <span class="tab-icon">J</span>
-                <span class="tab-label">Journal</span>
+                <span class="tab-label">thoughts</span>
             </button>
             <button class="tab-button" data-tab="focus">
                 <span class="tab-icon">F</span>
-                <span class="tab-label">Focus</span>
+                <span class="tab-label">timer</span>
             </button>
         </nav>
 
@@ -48,15 +48,15 @@
             
             <!-- Rock Tab (your existing pet rock) -->
             <div id="rockTab" class="tab-panel active">
-                <h1>My Pet Rock</h1>
-                <p id="rockIdentity" class="identity">Pebble the cheerful rock</p>
+                <h1>THIS IS YOUR ROCK</h1>
+                <p id="rockIdentity" class="identity">Pebble (chill vibes)</p>
 
                 <div class="rock-wrap">
                     <img id="rockImage" src="rock images/download (2).jpg" alt="Your pet rock">
                     <p id="moodText" class="mood">Mood: Calm</p>
                 </div>
 
-                <p id="happinessText">Happiness: 50</p>
+                <p id="happinessText">HAPPINESS: 50</p>
                 <div class="bar">
                     <div id="fill" class="fill"></div>
                 </div>
@@ -64,27 +64,27 @@
 
                 <section class="stats">
                     <div class="stat">
-                        <span class="stat-label">Time decay</span>
-                        <span id="decayText" class="stat-value">Checking...</span>
+                        <span class="stat-label">DECAY RATE</span>
+                        <span id="decayText" class="stat-value">checking...</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-label">Last fed</span>
-                        <span id="lastFedText" class="stat-value">Never</span>
+                        <span class="stat-label">LAST FED</span>
+                        <span id="lastFedText" class="stat-value">never</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-label">Days alive</span>
-                        <span id="daysAliveText" class="stat-value">Day 1</span>
+                        <span class="stat-label">DAYS ALIVE</span>
+                        <span id="daysAliveText" class="stat-value">day 1</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-label">Last message</span>
-                        <span id="lastQuote" class="stat-value">Nothing yet</span>
+                        <span class="stat-label">LAST THING YOU SAID</span>
+                        <span id="lastQuote" class="stat-value">nothing yet</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-label">Current streak</span>
+                        <span class="stat-label">STREAK</span>
                         <span id="streakText" class="stat-value">0 days</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-label">Best streak</span>
+                        <span class="stat-label">BEST STREAK</span>
                         <span id="longestStreakText" class="stat-value">0 days</span>
                     </div>
                 </section>
@@ -92,17 +92,17 @@
                 <div id="feedSection" class="feed-section">
                     <input
                         id="quote"
-                        placeholder="say something kind..."
+                        placeholder="say something nice..."
                         autocomplete="off"
                     >
-                    <button id="feedRockButton" type="button">Feed Rock</button>
+                    <button id="feedRockButton" type="button">FEED</button>
                 </div>
 
                 <div id="faintOverlay" class="faint-overlay hidden">
                     <div class="faint-card">
-                        <p class="faint-title">Your rock has fainted from neglect...</p>
-                        <button id="reviveRockButton" type="button" class="btn-revive">Revive Rock</button>
-                        <p class="faint-note">Streak resets and happiness returns to 25.</p>
+                        <p class="faint-title">your rock passed out from neglect</p>
+                        <button id="reviveRockButton" type="button" class="btn-revive">revive</button>
+                        <p class="faint-note">streak resets, happiness goes to 25</p>
                     </div>
                 </div>
 
@@ -112,92 +112,92 @@
                 </p>
 
                 <section class="badges">
-                    <h2>Achievements</h2>
+                    <h2>ACHIEVEMENTS</h2>
                     <div id="badgeGrid" class="badge-grid"></div>
                 </section>
 
                 <section class="history">
-                    <h2>Recent Messages</h2>
+                    <h2>RECENT STUFF YOU SAID</h2>
                     <ol id="historyList"></ol>
                 </section>
             </div>
 
             <!-- Journal Tab -->
             <div id="journalTab" class="tab-panel">
-                <h1>Daily Journal</h1>
-                <p class="tab-subtitle">Reflect on your day and track your mood</p>
+                <h1>brain dump</h1>
+                <p class="tab-subtitle">write stuff down if you want</p>
                 
                 <div class="journal-editor">
                     <div class="journal-header">
-                        <h3>Today's Entry</h3>
+                        <h3>today</h3>
                         <span id="journalDate" class="journal-date">April 2, 2026</span>
                     </div>
                     
                     <div class="mood-selector">
-                        <label>How are you feeling?</label>
+                        <label>how's it going?</label>
                         <div class="mood-options">
-                            <button class="mood-btn" data-mood="amazing">Amazing</button>
-                            <button class="mood-btn" data-mood="good">Good</button>
-                            <button class="mood-btn" data-mood="okay">Okay</button>
-                            <button class="mood-btn" data-mood="rough">Rough</button>
+                            <button class="mood-btn" data-mood="amazing">great</button>
+                            <button class="mood-btn" data-mood="good">good</button>
+                            <button class="mood-btn" data-mood="okay">meh</button>
+                            <button class="mood-btn" data-mood="rough">bad</button>
                         </div>
                     </div>
                     
                     <textarea 
                         id="journalTextarea" 
-                        placeholder="What's on your mind today? Write freely..."
+                        placeholder="whatever's on your mind..."
                         rows="8"
                     ></textarea>
                     
                     <div class="journal-actions">
-                        <button id="saveJournalButton" type="button">Save Entry (+5 happiness)</button>
+                        <button id="saveJournalButton" type="button">save (+5 happiness)</button>
                     </div>
                 </div>
 
                 <section class="journal-entries">
-                    <h2>Past Entries</h2>
+                    <h2>old stuff</h2>
                     <div id="journalList" class="entry-list">
-                        <p class="empty-state">No entries yet. Start journaling today!</p>
+                        <p class="empty-state">nothing here yet</p>
                     </div>
                 </section>
             </div>
 
             <!-- Focus Tab (Pomodoro) -->
             <div id="focusTab" class="tab-panel">
-                <h1>Focus Timer</h1>
-                <p class="tab-subtitle">Stay productive with the Pomodoro technique</p>
+                <h1>pomodoro thing</h1>
+                <p class="tab-subtitle">work for 25min, break for 5</p>
                 
                 <div class="pomodoro-container">
                     <div class="timer-display">
                         <div id="timerCircle" class="timer-circle">
                             <span id="timerText" class="timer-text">25:00</span>
-                            <span id="timerLabel" class="timer-label">Work Session</span>
+                            <span id="timerLabel" class="timer-label">work time</span>
                         </div>
                     </div>
                     
                     <div class="timer-controls">
-                        <button id="startTimerButton" type="button" class="timer-btn primary">Start</button>
-                        <button id="pauseTimerButton" type="button" class="timer-btn hidden">Pause</button>
-                        <button id="resetTimerButton" type="button" class="timer-btn secondary">Reset</button>
+                        <button id="startTimerButton" type="button" class="timer-btn primary">start</button>
+                        <button id="pauseTimerButton" type="button" class="timer-btn hidden">pause</button>
+                        <button id="resetTimerButton" type="button" class="timer-btn secondary">reset</button>
                     </div>
                     
                     <div class="timer-stats">
                         <div class="stat">
-                            <span class="stat-label">Sessions today</span>
+                            <span class="stat-label">today</span>
                             <span id="sessionsToday" class="stat-value">0</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-label">Total sessions</span>
+                            <span class="stat-label">all time</span>
                             <span id="sessionsTotal" class="stat-value">0</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="task-section">
-                    <h2>Focus Tasks</h2>
+                    <h2>stuff to do</h2>
                     <div class="task-input">
-                        <input id="taskInput" type="text" placeholder="What are you working on?">
-                        <button id="addTaskButton" type="button">Add</button>
+                        <input id="taskInput" type="text" placeholder="what are you working on?">
+                        <button id="addTaskButton" type="button">add</button>
                     </div>
                     <ul id="taskList" class="task-list"></ul>
                 </div>

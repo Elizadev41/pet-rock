@@ -1,15 +1,15 @@
 :root {
-    --bg: #11131a;
-    --panel: #1a1f2b;
-    --text: #f4f7fb;
-    --muted: #b4bfd3;
-    --track: #2e3547;
-    --good: #5bd18b;
-    --mid: #7d8cff;
-    --bad: #ff7171;
-    --accent: #ffd978;
-    --gold: #f3cd62;
-    --shadow: rgba(0, 0, 0, 0.35);
+    --bg: #0f0f15;
+    --panel: #1a1620;
+    --text: #ffffff;
+    --muted: #c0b8d8;
+    --track: #2d1f42;
+    --good: #3fd970;
+    --mid: #a b8cff;
+    --bad: #b b6aff;
+    --accent: #ffd700;
+    --gold: #ffeb3b;
+    --shadow: rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -19,11 +19,9 @@
 body {
     margin: 0;
     min-height: 100vh;
-    background:
-        radial-gradient(circle at top, #1d2230 0%, var(--bg) 55%),
-        var(--bg);
+    background: linear-gradient(135deg, #1a1620 0%, #0f0f15 100%);
     color: var(--text);
-    font-family: Arial, sans-serif;
+    font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
     display: grid;
     place-items: center;
     padding: 24px;
@@ -37,28 +35,26 @@ body {
     display: grid;
     place-items: center;
     padding: 24px;
-    background:
-        radial-gradient(circle at top, rgba(255, 217, 120, 0.18), transparent 36%),
-        linear-gradient(180deg, rgba(17, 19, 26, 0.92), rgba(17, 19, 26, 0.98));
+    background: linear-gradient(135deg, rgba(15, 15, 21, 0.98), rgba(26, 22, 32, 0.98));
 }
 
 .welcome-card {
     width: min(92vw, 560px);
-    padding: 34px 26px;
-    border-radius: 28px;
-    background: linear-gradient(180deg, rgba(26, 31, 43, 0.98), rgba(20, 24, 34, 0.96));
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+    padding: 40px 30px;
+    border-radius: 36px;
+    background: linear-gradient(180deg, rgba(30, 36, 50, 0.98), rgba(24, 32, 46, 0.96));
+    border: 4px solid var(--accent);
+    box-shadow: 0 8px 0px rgba(0, 0, 0, 0.3), 0 16px 32px rgba(0, 0, 0, 0.5);
     text-align: center;
 }
 
 .welcome-kicker {
     margin: 0 0 12px;
     color: var(--gold);
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
 }
 
 .welcome-copy {
@@ -76,14 +72,15 @@ body {
 
 .welcome-name {
     width: min(320px, 100%);
-    padding: 16px 18px;
-    border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.06);
+    padding: 18px 22px;
+    border-radius: 20px;
+    border: 3px solid var(--accent);
+    background: rgba(255, 255, 255, 0.08);
     color: var(--text);
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: 0.03em;
+    box-shadow: 0 4px 0px rgba(0, 0, 0, 0.2);
 }
 
 .welcome-button {
@@ -91,9 +88,10 @@ body {
 }
 
 .welcome-button-secondary {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--text);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 0px rgba(0, 0, 0, 0.2);
 }
 
 .welcome-actions {
@@ -107,11 +105,11 @@ body {
 .app {
     position: relative;
     width: min(92vw, 720px);
-    background: rgba(26, 31, 43, 0.94);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 24px;
+    background: rgba(24, 32, 46, 0.96);
+    border: 4px solid #2a3544;
+    border-radius: 32px;
     padding: 0;
-    box-shadow: 0 18px 50px var(--shadow);
+    box-shadow: 0 10px 0px rgba(0, 0, 0, 0.25), 0 20px 40px rgba(0, 0, 0, 0.5);
     overflow: hidden;
 }
 
@@ -120,8 +118,8 @@ body {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 0;
-    background: rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(45, 31, 66, 0.4);
+    border-bottom: 2px solid rgba(171, 140, 255, 0.3);
     padding: 8px 8px 0 8px;
 }
 
@@ -130,34 +128,29 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 4px;
-    padding: 10px 8px;
-    border: 0;
+    padding: 12px 10px;
+    border: 2px solid transparent;
     background: transparent;
     color: var(--muted);
     cursor: pointer;
-    border-radius: 12px 12px 0 0;
+    border-radius: 14px 14px 0 0;
     transition: all 0.2s ease;
     position: relative;
 }
 
 .tab-button:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
     color: var(--text);
 }
 
 .tab-button.active {
-    background: rgba(26, 31, 43, 0.94);
+    background: rgba(24, 32, 46, 0.94);
     color: var(--accent);
+    border-bottom: 3px solid var(--accent);
 }
 
 .tab-button.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--accent);
+    display: none;
 }
 
 .tab-icon {
@@ -167,8 +160,9 @@ body {
 
 .tab-label {
     font-size: 0.7rem;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: 0.02em;
+    text-transform: lowercase;
 }
 
 /* Tab Content */
@@ -194,15 +188,23 @@ body {
 /* Base Styles */
 h1, h2, h3 {
     margin: 0;
+    font-weight: 800;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
 }
 
 h1 {
-    font-size: 2rem;
+    font-size: 2.4rem;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
 }
 
 h2 {
-    font-size: 1rem;
-    margin-bottom: 12px;
+    font-size: 1.1rem;
+    margin-bottom: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 h3 {
@@ -211,13 +213,14 @@ h3 {
 
 input, textarea {
     width: 100%;
-    padding: 12px 14px;
+    padding: 14px 16px;
     border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.06);
+    border: 3px solid #2a3544;
+    background: rgba(255, 255, 255, 0.08);
     color: var(--text);
-    font-size: 16px;
+    font-size: 15px;
     font-family: inherit;
+    font-weight: 500;
 }
 
 textarea {
@@ -226,20 +229,29 @@ textarea {
 }
 
 button {
-    padding: 12px 16px;
-    border: 0;
+    padding: 14px 24px;
+    border: 3px solid #171717;
     border-radius: 14px;
     background: var(--accent);
-    color: #171717;
-    font-weight: 700;
+    color: #1a1f2e;
+    font-weight: 800;
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    font-family: inherit;
+    transition: all 0.1s ease;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+    box-shadow: 0 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 18px rgba(255, 217, 120, 0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0px rgba(0, 0, 0, 0.3);
+}
+
+button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0px rgba(0, 0, 0, 0.2);
 }
 
 /* Rock Tab Styles (from original) */
@@ -251,17 +263,22 @@ button:hover {
 }
 
 .rock-wrap {
-    margin: 8px auto 18px;
+    margin: 24px auto 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 12px;
 }
 
 #rockImage {
-    width: min(230px, 62vw);
+    width: min(280px, 70vw);
     aspect-ratio: 1 / 1;
     object-fit: cover;
-    border-radius: 22px;
+    border-radius: 20px;
     background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+    border: 4px solid #171717;
+    box-shadow: 0 8px 0px rgba(0, 0, 0, 0.25), 0 12px 24px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
 }
 
@@ -269,18 +286,29 @@ button:hover {
     transform: scale(1.04);
 }
 
+#happinessText {
+    margin: 16px 0 14px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
 .mood {
     color: var(--muted);
-    margin: 10px 0 16px;
+    margin: 12px 0 18px;
+    font-size: 0.95rem;
 }
 
 .bar {
-    width: min(320px, 80vw);
-    height: 14px;
+    width: min(340px, 85vw);
+    height: 24px;
     background: var(--track);
-    margin: 12px auto 10px;
+    margin: 16px auto 18px;
     border-radius: 999px;
     overflow: hidden;
+    border: 3px solid #171717;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .fill {
@@ -288,18 +316,22 @@ button:hover {
     width: 50%;
     background: var(--mid);
     transition: width 0.3s ease, background 0.3s ease;
+    border-radius: 999px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .streak-banner {
     width: fit-content;
     max-width: 100%;
-    margin: 0 auto 16px;
-    padding: 8px 14px;
+    margin: 0 auto 18px;
+    padding: 10px 18px;
     border-radius: 999px;
-    background: rgba(243, 205, 98, 0.14);
-    border: 1px solid rgba(243, 205, 98, 0.32);
+    background: rgba(243, 205, 98, 0.2);
+    border: 3px solid var(--gold);
     color: var(--gold);
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 0px rgba(0, 0, 0, 0.2);
 }
 
 .stats {
@@ -311,27 +343,36 @@ button:hover {
 }
 
 .stat {
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 16px;
-    padding: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+    padding: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 0px rgba(0, 0, 0, 0.15);
 }
 
 .stat-label {
     display: block;
     color: var(--muted);
-    font-size: 0.82rem;
-    margin-bottom: 4px;
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-weight: 600;
 }
 
 .stat-value {
-    font-size: 0.98rem;
-}
-
-.feed-section {
-    display: flex;
-    gap: 10px;
+    font-size: 1.2rem;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
+    margin: 24px 0;
+}
+
+.feed-section input {
+    width: min(360px, 90vw);
+    padding: 14px 16px;
+    font-size: 15px;
+    border-radius: 6px;
     flex-wrap: wrap;
 }
 
@@ -340,22 +381,26 @@ button:hover {
 }
 
 .response-line {
-    min-height: 24px;
-    margin: 14px 0 8px;
+    min-height: 28px;
+    margin: 16px 0 12px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     flex-wrap: wrap;
+    color: var(--muted);
+    font-size: 0.95rem;
 }
 
 .quality-tag {
-    padding: 4px 10px;
+    padding: 6px 14px;
     border-radius: 999px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #11131a;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #1a1f2e;
     background: var(--accent);
+    border: 2px solid #171717;
+    box-shadow: 0 3px 0px rgba(0, 0, 0, 0.2);
 }
 
 .quality-tag.good {
@@ -367,7 +412,7 @@ button:hover {
 }
 
 .badges, .history {
-    margin-top: 20px;
+    margin-top: 32px;
     text-align: left;
 }
 
@@ -378,16 +423,18 @@ button:hover {
 }
 
 .badge {
-    border-radius: 16px;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px solid rgba(255, 255, 255, 0.12);
     transition: border-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 4px 0px rgba(0, 0, 0, 0.15);
 }
 
 .badge.unlocked {
-    border-color: rgba(243, 205, 98, 0.45);
-    background: linear-gradient(180deg, rgba(243, 205, 98, 0.15), rgba(255, 255, 255, 0.05));
+    border-color: rgba(243, 205, 98, 0.6);
+    background: linear-gradient(180deg, rgba(243, 205, 98, 0.2), rgba(255, 255, 255, 0.08));
+    box-shadow: 0 4px 0px rgba(0, 0, 0, 0.15), inset 0 1px 0px rgba(255, 255, 255, 0.15);
 }
 
 .badge.locked {
@@ -431,11 +478,11 @@ button:hover {
 
 .faint-card {
     width: min(92vw, 420px);
-    padding: 28px 22px;
-    border-radius: 24px;
+    padding: 32px 26px;
+    border-radius: 28px;
     background: linear-gradient(180deg, rgba(12, 12, 12, 0.96), rgba(24, 24, 24, 0.92));
-    border: 1px solid rgba(255, 217, 120, 0.16);
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+    border: 4px solid var(--bad);
+    box-shadow: 0 12px 0px rgba(0, 0, 0, 0.3), 0 20px 60px rgba(0, 0, 0, 0.6);
 }
 
 .faint-title {
